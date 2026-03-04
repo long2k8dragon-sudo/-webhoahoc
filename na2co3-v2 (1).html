@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sơ đồ tư duy – Na₂CO₃</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --c1: #ff4757; --c1g: linear-gradient(135deg,#ff4757,#ff6b81);
+  --c2: #ffa502; --c2g: linear-gradient(135deg,#ffa502,#ffcd56);
+  --c3: #2ed573; --c3g: linear-gradient(135deg,#2ed573,#7bed9f);
+  --c4: #1e90ff; --c4g: linear-gradient(135deg,#1e90ff,#70b8ff);
+  --c5: #ff6bc1; --c5g: linear-gradient(135deg,#ff6bc1,#ffb3dd);
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: #0a0e1a;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── BG ── */
+.bg {
+  position: fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 10%, rgba(30,144,255,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(46,213,115,.10) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 60% 30%, rgba(255,71,87,.08) 0%, transparent 60%);
+}
+/* moving particles */
+.particle {
+  position:absolute;
+  border-radius:50%;
+  animation: drift linear infinite;
+  opacity:0;
+}
+@keyframes drift {
+  0%   { opacity:0; transform: translateY(100vh) scale(0); }
+  10%  { opacity:.6; }
+  90%  { opacity:.3; }
+  100% { opacity:0; transform: translateY(-10vh) scale(1.2); }
+}
+/* grid dots */
+.bg::after {
+  content:'';position:absolute;inset:0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* ── PAGE ── */
+.page {
+  position: relative; z-index:1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── HEADER ── */
+.header { text-align:center; margin-bottom: 48px; }
+
+.header .eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .7rem; font-weight:600;
+  color: #1e90ff;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex; align-items:center; justify-content:center; gap:8px;
+}
+.eyebrow::before,.eyebrow::after {
+  content:'';display:block;width:40px;height:1px;background:#1e90ff44;
+}
+
+.header h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  color: #f0f4ff;
+}
+.header h1 .formula {
+  display: inline-block;
+  background: linear-gradient(90deg, #1e90ff, #2ed573, #ff6bc1);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200%;
+  animation: gradShift 4s ease-in-out infinite;
+}
+@keyframes gradShift { 0%,100%{background-position:0%} 50%{background-position:100%} }
+
+.header .tagline {
+  margin-top:10px;
+  font-size:.82rem;color:#4a5568;letter-spacing:1px;
+}
+
+/* badges row */
+.badge-row {
+  display: flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;
+}
+.badge {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;font-weight:600;
+  padding:5px 14px;border-radius:20px;
+  border:1px solid;
+  backdrop-filter:blur(10px);
+}
+.badge.b1{color:#1e90ff;border-color:#1e90ff40;background:rgba(30,144,255,.08);}
+.badge.b2{color:#2ed573;border-color:#2ed57340;background:rgba(46,213,115,.08);}
+.badge.b3{color:#ffa502;border-color:#ffa50240;background:rgba(255,165,2,.08);}
+
+/* ── CENTER MOLECULE DISPLAY ── */
+.molecule-row {
+  display: flex; align-items:center; justify-content:center;
+  gap: 0; margin-bottom:52px;
+  position: relative;
+}
+.mol-center {
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid rgba(30,144,255,.4);
+  border-radius: 20px;
+  padding: 22px 40px;
+  text-align: center;
+  position: relative;
+  backdrop-filter: blur(16px);
+  box-shadow:
+    0 0 40px rgba(30,144,255,.15),
+    0 0 80px rgba(30,144,255,.06),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.mol-center::before {
+  content:'';position:absolute;inset:-1px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(30,144,255,.3),rgba(46,213,115,.2),rgba(255,107,193,.2));
+  z-index:-1;
+  animation:borderGlow 3s ease-in-out infinite;
+}
+@keyframes borderGlow {
+  0%,100%{opacity:.5} 50%{opacity:1}
+}
+.mol-formula {
+  font-family:'JetBrains Mono',monospace;
+  font-size:2.4rem;font-weight:600;
+  background:linear-gradient(135deg,#1e90ff,#2ed573);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block; line-height:1;
+}
+.mol-name { font-size:.8rem;color:#8892a4;margin-top:6px;display:block; }
+.mol-subname { font-size:.7rem;color:#4a5568;margin-top:2px; }
+
+/* connectors from center to branches */
+.mol-lines {
+  position:absolute;
+  inset:0;pointer-events:none;z-index:-1;
+}
+
+/* ── BRANCHES GRID ── */
+.branches {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 16px;
+  position: relative;
+}
+
+/* connecting line from each card to top  */
+.branch-card {
+  position: relative;
+  cursor: pointer;
+}
+.branch-card::before {
+  content:'';
+  position:absolute;
+  top:-32px; left:50%;
+  width:2px;height:32px;
+  transform:translateX(-50%);
+  background:linear-gradient(to bottom,var(--cc)88,var(--cc)22);
+  transition:height .3s;
+}
+.branch-card.open::before { height:32px; }
+
+/* top dot */
+.branch-card::after {
+  content:'';
+  position:absolute;
+  top:-38px;left:50%;
+  width:10px;height:10px;
+  border-radius:50%;
+  background:var(--cc);
+  transform:translateX(-50%);
+  box-shadow:0 0 10px var(--cc);
+}
+
+/* horizontal connector bar */
+.h-bar {
+  position: absolute;
+  top: -33px;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573, #1e90ff, #ff6bc1);
+  opacity: .35;
+  border-radius: 2px;
+}
+
+.card-inner {
+  background: rgba(255,255,255,.04);
+  border: 1.5px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
+  backdrop-filter: blur(12px);
+}
+.branch-card:hover .card-inner,
+.branch-card.open .card-inner {
+  border-color: var(--cc)66;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3), 0 0 20px var(--cc)22;
+  transform: translateY(-3px);
+}
+
+/* card header */
+.card-header {
+  padding: 16px 18px;
+  display: flex; align-items:center; gap:10px;
+  background: linear-gradient(135deg, var(--cc)18, transparent);
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  user-select:none;
+  transition: background .2s;
+}
+.branch-card.open .card-header {
+  background: linear-gradient(135deg, var(--cc)28, var(--cc)10);
+}
+.card-icon {
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+  background:var(--cg);
+  flex-shrink:0;
+  box-shadow:0 3px 10px var(--cc)44;
+}
+.card-title {
+  font-size:1.08rem;font-weight:800;
+  color:#e8edf5;line-height:1.3;
+}
+.card-arrow {
+  margin-left:auto;font-size:.65rem;
+  color:var(--cc);opacity:.7;
+  transition:transform .25s;
+  flex-shrink:0;
+}
+.branch-card.open .card-arrow { transform:rotate(180deg); }
+
+/* card body */
+.card-body {
+  max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1);
+}
+.branch-card.open .card-body { max-height:800px; }
+
+.card-body-inner { padding:14px 16px 18px; display:flex;flex-direction:column;gap:12px; }
+
+/* sub item */
+.si {
+  position:relative;
+  padding-left:14px;
+}
+.si::before {
+  content:'';
+  position:absolute;left:0;top:6px;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--cc);
+  box-shadow:0 0 6px var(--cc);
+}
+
+.si-title {
+  font-size:1rem;font-weight:700;
+  color:#c8d0e0;line-height:1.3;
+  margin-bottom:4px;
+}
+
+.si-leaves { display:flex;flex-direction:column;gap:3px; }
+.leaf {
+  font-size:.92rem;color:#5a6a80;
+  padding-left:10px;position:relative;line-height:1.45;
+}
+.leaf::before { content:'–';position:absolute;left:0;color:#3a4a60; }
+
+.eq {
+  font-family:'JetBrains Mono',monospace;
+  font-size:.84rem;
+  background:rgba(0,0,0,.3);
+  border:1px solid var(--cc)33;
+  border-left:2px solid var(--cc)88;
+  border-radius:6px;
+  padding:6px 10px;
+  color:#7a9ab0;
+  line-height:1.55;
+  margin-top:4px;
+}
+
+/* divider between sub-items */
+.si + .si { border-top:1px solid rgba(255,255,255,.04); padding-top:12px; }
+
+/* ── COLORS per card ── */
+.c1 { --cc:#ff4757; --cg:linear-gradient(135deg,#ff4757,#ff6b81); }
+.c2 { --cc:#ffa502; --cg:linear-gradient(135deg,#ffa502,#ffcd56); }
+.c3 { --cc:#2ed573; --cg:linear-gradient(135deg,#2ed573,#7bed9f); }
+.c4 { --cc:#1e90ff; --cg:linear-gradient(135deg,#1e90ff,#70b8ff); }
+.c5 { --cc:#ff6bc1; --cg:linear-gradient(135deg,#ff6bc1,#ffb3dd); }
+
+.author {
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  animation: fadeSlide .8s ease .6s both;
+}
+.author-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem;
+  color: #2a3a55;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.author-name {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #1e90ff, #2ed573, #ff6bc1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200%;
+  animation: gradShift 4s ease-in-out infinite;
+  letter-spacing: .5px;
+  filter: drop-shadow(0 0 8px rgba(30,144,255,.45));
+}
+.author-line {
+  width: 100%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #1e90ff, #2ed573);
+  border-radius: 2px;
+}
+
+footer {
+  text-align:center;margin-top:56px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.6rem;color:#2a3444;letter-spacing:2px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeSlide { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.branch-card { animation: fadeSlide .5s ease both; }
+.branch-card:nth-child(2){animation-delay:.08s}
+.branch-card:nth-child(3){animation-delay:.16s}
+.branch-card:nth-child(4){animation-delay:.24s}
+.branch-card:nth-child(5){animation-delay:.32s}
+/* skip h-bar */
+.h-bar { animation:none; }
+</style>
+</head>
+<body>
+
+<!-- background -->
+<div class="bg"></div>
+<script>
+// generate floating particles
+const bg = document.querySelector('.bg');
+const colors = ['#1e90ff','#2ed573','#ff4757','#ffa502','#ff6bc1'];
+for(let i=0;i<22;i++){
+  const d=document.createElement('div');
+  d.className='particle';
+  const sz=Math.random()*4+2;
+  d.style.cssText=`
+    width:${sz}px;height:${sz}px;
+    left:${Math.random()*100}%;
+    background:${colors[i%5]};
+    animation-duration:${8+Math.random()*12}s;
+    animation-delay:${Math.random()*12}s;
+    opacity:0;
+  `;
+  bg.appendChild(d);
+}
+</script>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">Hoá học lớp 12</div>
+    <h1>Sơ đồ tư duy ứng dụng<br><span class="formula">Na₂CO₃</span></h1>
+    <div class="tagline">Muối Cacbonat · Natri cacbonat</div>
+    <div class="badge-row">
+      <span class="badge b1">M = 106 g/mol</span>
+      <span class="badge b2">pH ≈ 11.6</span>
+      <span class="badge b3">Muối bazơ mạnh</span>
+    </div>
+  </div>
+
+  <!-- MOLECULE CENTER -->
+  <div class="molecule-row">
+    <div class="mol-center">
+      <span class="mol-formula">🧪 Na₂CO₃</span>
+      <span class="mol-name">Natri cacbonat</span>
+      <span class="mol-subname">Soda công nghiệp · Soda ash</span>
+    </div>
+  </div>
+
+  <!-- BRANCHES -->
+  <div class="branches">
+    <div class="h-bar"></div>
+
+    <!-- 2. Công nghiệp -->
+    <div class="branch-card c2" onclick="toggle(this)">
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="card-icon">🏭</div>
+          <div class="card-title">Công nghiệp</div>
+          <div class="card-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+
+            <div class="si">
+              <div class="si-title">Sản xuất thuỷ tinh</div>
+              <div class="si-leaves">
+                <div class="leaf">Hạ nhiệt độ nóng chảy SiO₂</div>
+                <div class="leaf">Thành phần chính thuỷ tinh soda-vôi</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Sản xuất xà phòng</div>
+              <div class="si-leaves">
+                <div class="leaf">Xà phòng hoá chất béo trong kiềm</div>
+                <div class="leaf">Thay thế NaOH trong nhiều quy trình</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Sản xuất giấy</div>
+              <div class="si-leaves">
+                <div class="leaf">Phân giải lignin trong bột gỗ</div>
+                <div class="leaf">Tẩy trắng và làm mềm sợi giấy</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Luyện kim</div>
+              <div class="si-leaves">
+                <div class="leaf">Chất trợ dung loại bỏ tạp chất SiO₂</div>
+                <div class="leaf">Tinh chế quặng nhôm (bauxite)</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Môi trường -->
+    <div class="branch-card c3" onclick="toggle(this)">
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="card-icon">🌿</div>
+          <div class="card-title">Môi trường</div>
+          <div class="card-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+
+            <div class="si">
+              <div class="si-title">Xử lý nước cứng</div>
+              <div class="eq">Na₂CO₃ + Ca²⁺ → CaCO₃↓ + 2Na⁺</div>
+              <div class="si-leaves">
+                <div class="leaf">Kết tủa ion Ca²⁺, Mg²⁺ gây cứng</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Điều chỉnh pH nước</div>
+              <div class="si-leaves">
+                <div class="leaf">Trung hoà nước thải acid</div>
+                <div class="leaf">Dùng trong bể bơi, hệ xử lý nước</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Hấp thụ SO₂ / CO₂</div>
+              <div class="eq">Na₂CO₃ + SO₂ → Na₂SO₃ + CO₂</div>
+              <div class="si-leaves">
+                <div class="leaf">Giảm khí thải acid từ nhà máy</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Tái chế thuỷ tinh</div>
+              <div class="si-leaves">
+                <div class="leaf">Chất trợ dung trong lò tái chế</div>
+                <div class="leaf">Giảm nhiệt độ nấu chảy, tiết kiệm năng lượng</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Tẩy rửa -->
+    <div class="branch-card c4" onclick="toggle(this)">
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="card-icon">🧼</div>
+          <div class="card-title">Tẩy rửa</div>
+          <div class="card-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+
+            <div class="si">
+              <div class="si-title">Bột giặt & xà phòng</div>
+              <div class="si-leaves">
+                <div class="leaf">Tăng độ kiềm → tẩy dầu mỡ hiệu quả</div>
+                <div class="leaf">Thành phần chính bột giặt công nghiệp</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Tẩy vết bẩn cứng đầu</div>
+              <div class="si-leaves">
+                <div class="leaf">Mạnh hơn NaHCO₃, tẩy dầu xe, bếp</div>
+                <div class="leaf">Pha loãng lau sàn, khử mùi thảm</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Làm mềm nước giặt</div>
+              <div class="si-leaves">
+                <div class="leaf">Kết tủa Ca²⁺, Mg²⁺ trong nước cứng</div>
+                <div class="leaf">Tăng hiệu quả xà phòng, bột giặt</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Thông cống & Tẩy bình</div>
+              <div class="si-leaves">
+                <div class="leaf">Kết hợp nước nóng phân giải mỡ cặn</div>
+                <div class="leaf">Tẩy cặn vôi trong ấm đun, nồi hơi</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Thực phẩm & Dệt -->
+    <div class="branch-card c5" onclick="toggle(this)">
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="card-icon">🎨</div>
+          <div class="card-title">Thực phẩm & Dệt</div>
+          <div class="card-arrow">▼</div>
+        </div>
+        <div class="card-body">
+          <div class="card-body-inner">
+
+            <div class="si">
+              <div class="si-title">Phụ gia thực phẩm (E500)</div>
+              <div class="si-leaves">
+                <div class="leaf">Điều chỉnh độ chua trong mì, bánh</div>
+                <div class="leaf">Làm mì sợi dai, vàng đẹp (mì kiềm)</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Chế biến ô liu, pretzels</div>
+              <div class="si-leaves">
+                <div class="leaf">Ngâm ô liu khử vị đắng oleuropein</div>
+                <div class="leaf">Tạo vỏ giòn bóng đặc trưng pretzel</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Công nghiệp dệt nhuộm</div>
+              <div class="si-leaves">
+                <div class="leaf">Tác nhân đệm pH trong bể nhuộm vải</div>
+                <div class="leaf">Cố định màu thuốc nhuộm hoạt tính</div>
+              </div>
+            </div>
+
+            <div class="si">
+              <div class="si-title">Điều chế NaHCO₃</div>
+              <div class="eq">Na₂CO₃ + CO₂ + H₂O → 2NaHCO₃</div>
+              <div class="si-leaves">
+                <div class="leaf">Nguyên liệu sản xuất baking soda</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /branches -->
+
+  <footer>⬡ Na₂CO₃ · Natri Cacbonat · Hoá học lớp 12 · Muối của acid yếu — bazơ mạnh ⬡</footer>
+</div>
+
+<div class="author">
+  <div class="author-label">Tác giả</div>
+  <div class="author-name">Nguyễn Hoàng Long</div>
+  <div class="author-line"></div>
+</div>
+
+<script>
+function toggle(el) {
+  el.classList.toggle('open');
+}
+// open all by default
+document.querySelectorAll('.branch-card').forEach(c => c.classList.add('open'));
+</script>
+</body>
+</html>
